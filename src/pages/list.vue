@@ -1,24 +1,6 @@
 <template>
-  <div>
-    <!--<button type="button" @click="createProduct">Create Product</button>-->
-    <v-data-table :headers="headers"
-                  :items="products">
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.id }}</td>
-        <td>{{ props.item.name }}</td>
-        <td>{{ props.item.description }}</td>
-        <td class="text-xs-right">
-          <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
-          <v-icon small @click="remove(props.item)">delete</v-icon>
-        </td>
-      </template>
-    </v-data-table>
-    <!---->
-    <v-toolbar>
-      <v-btn color="success" :to="{ name: 'product.create' }">Add Product</v-btn>
-    </v-toolbar>
-    <!-- Remove product dialog confirmation -->
-    <v-dialog v-model="confirmDeleteDialog" width="500">
+  <v-flex class="position-relative">
+    <v-dialog v-model="confirmRemovingDialog" width="500">
       <v-card>
         <v-card-title class="headline mb-4">
           Do you want to remove product?
@@ -31,14 +13,40 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+    
+    <v-data-table :headers="headers" :items="products" hide-actions class="product-container">
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.id }}</td>
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.description }}</td>
+        <td class="text-xs-right">
+          <v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
+          <v-icon small @click="remove(props.item)">delete</v-icon>
+        </td>
+      </template>
+    </v-data-table>
+   
+    <!-- Tool Bar-->
+    <v-toolbar class="nav-bottom">
+      <v-layout justify-space-between>
+        <v-btn color="success" :to="{ name: 'product.create' }">Add Product</v-btn>
+        <v-chip color="green" text-color="white">
+          <v-avatar class="green darken-4">{{ count }}</v-avatar>
+          {{ count === 1 ? 'Product' : 'Products' }}
+        </v-chip>
+      </v-layout>
+    </v-toolbar>
+    <!-- Remove product dialog confirmation -->
+  </v-flex>
 </template>
 
 <script>
+import { MUTATIONS } from '@/store/types'
+
 export default {
   data () {
     return {
-      confirmDeleteDialog: false,
+      confirmRemovingDialog: false,
       productToRemove: null,
       headers: [
         { text: 'ID', value: 'id' },
@@ -52,6 +60,9 @@ export default {
     products () {
       return this.$store.state.products
     },
+    count () {
+      return this.products.length
+    },
   },
   methods: {
     edit (product) {
@@ -59,19 +70,36 @@ export default {
     },
     remove (product) {
       this.productToRemove = product
-      this.confirmDeleteDialog = true
+      this.confirmRemovingDialog = true
     },
     closeDialog (confirmed = false) {
       if (confirmed) {
-        this.$store.commit('remove', this.productToRemove.id)
+        this.$store.commit(MUTATIONS.REMOVE, this.productToRemove.id)
       }
+      
       this.productToRemove = null
-      this.confirmDeleteDialog = false
+      this.confirmRemovingDialog = false
     },
   },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+  .position-relative {
+    position: relative;
+  }
+  
+  .nav-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .product-container {
+    position: absolute;
+    top: 0;
+    bottom: 70px;
+    width: 100%;
+    overflow: auto;
+  }
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
     <v-app dark>
       <v-content>
-        <v-container fluid>
+        <v-container fluid fill-height style="align-items: stretch;">
           <router-view/>
         </v-container>
       </v-content>

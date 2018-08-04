@@ -1,10 +1,12 @@
 <template>
-  <v-card>
-    <v-card-title class="headline">Update Product</v-card-title>
-    <v-card-text>
-      <product-form success-btn-label="Update" :product="product" @save="update"></product-form>
-    </v-card-text>
-  </v-card>
+  <v-layout align-center justify-center>
+    <v-card width="600">
+      <v-card-title class="headline">Update Product</v-card-title>
+      <v-card-text>
+        <product-form success-btn-label="Update" :product="product" @save="update"></product-form>
+      </v-card-text>
+    </v-card>
+  </v-layout>
 </template>
 
 <script>
