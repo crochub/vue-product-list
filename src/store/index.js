@@ -7,6 +7,7 @@ import { GETTERS, MUTATIONS } from './types'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: true,
   state: {
     products: [],
   },
@@ -22,7 +23,14 @@ export default new Vuex.Store({
 
       state.products.push({ id, name, description })
     },
-    [MUTATIONS.UPDATE] () {},
+    [MUTATIONS.UPDATE] (state, { id, name, description }) {
+      const product = state.products.find(p => p.id === id)
+
+      if (product) {
+        product.name = name
+        product.description = description
+      }
+    },
     [MUTATIONS.REMOVE] (state, id) {
       const index = state.products.findIndex(p => p.id === id)
 

@@ -66,5 +66,6 @@ module.exports = {
     'object-curly-newline': 0,
     'semi': ["error", "never"],
     'max-len': ["error", { "code": 120 }],
+    'no-trailing-spaces': ["error", { "skipBlankLines": true }],
   }
 }
