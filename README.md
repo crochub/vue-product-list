@@ -1,6 +1,7 @@
 # vue-product-list
 
 > Simple app for managing products list locally
+[Demo](http://peaceful-carson-cf7fe8.bitballoon.com/)
 
 ## Build Setup
 
